@@ -1,5 +1,5 @@
 <div class="collection-head">
-  <h1 class="h2">Collections</h1>
+  <h1 class="h1">Collections</h1>
 </div>
 <ul class="collection-grid" style="margin-top: 48px;">
   {%- for collection in collections -%}
@@ -10,7 +10,7 @@
             {{ collection.featured_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360, 540, 720, 900', sizes: '(min-width: 990px) 25vw, 50vw', alt: collection.title }}
           {%- endif -%}
         </div>
-        <div class="card__info"><span class="h6">{{ collection.title | escape }}</span></div>
+        <div class="card__info"><span class="h5">{{ collection.title | escape }}</span></div>
       </a>
     </li>
   {%- endfor -%}

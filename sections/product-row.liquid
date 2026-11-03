@@ -38,7 +38,7 @@
         <div class="card">
           <div class="card__media">{{ 'product-' | append: i | placeholder_svg_tag }}</div>
           <div class="card__info">
-            <p class="card__title h6">Choose a collection in the theme editor</p>
+            <p class="card__title h5">Choose a collection in the theme editor</p>
             <p class="card__price body">£—</p>
           </div>
         </div>
@@ -57,11 +57,11 @@
       "id": "heading_size",
       "label": "Heading size",
       "options": [
-        { "value": "h2", "label": "Extra large" },
-        { "value": "h3", "label": "Large" },
-        { "value": "h4", "label": "Medium" }
+        { "value": "h1", "label": "Heading 1 (largest)" },
+        { "value": "h2", "label": "Heading 2" },
+        { "value": "h3", "label": "Heading 3" }
       ],
-      "default": "h2"
+      "default": "h1"
     },
     { "type": "collection", "id": "collection", "label": "Collection" },
     { "type": "checkbox", "id": "all_products", "label": "Show newest of all products instead", "default": false, "info": "Ignores the collection above." },

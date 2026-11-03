@@ -1,7 +1,7 @@
 <div class="drawer-overlay" data-drawer-close></div>
 <aside class="drawer" id="CartDrawer" role="dialog" aria-modal="true" aria-labelledby="CartDrawerTitle" tabindex="-1" data-cart-drawer>
   <div class="drawer__head">
-    <h2 class="h5" id="CartDrawerTitle">Your basket</h2>
+    <h2 class="h4" id="CartDrawerTitle">Your basket</h2>
     <button class="drawer__close" type="button" data-drawer-close aria-label="Close basket">&times;</button>
   </div>
 
@@ -23,7 +23,7 @@
               {%- endif -%}
             </a>
             <div class="line-item__info">
-              <a class="h6" href="{{ item.url }}">{{ item.product.title | escape }}</a>
+              <a class="h5" href="{{ item.url }}">{{ item.product.title | escape }}</a>
               {%- unless item.product.has_only_default_variant -%}
                 <p class="small">{{ item.variant.title | escape }}</p>
               {%- endunless -%}
@@ -37,7 +37,7 @@
     <div class="drawer__foot">
       <div class="drawer__total">
         <span class="tagline-l">Subtotal</span>
-        <span class="h6">{{ cart.total_price | money_without_trailing_zeros }}</span>
+        <span class="h5">{{ cart.total_price | money_without_trailing_zeros }}</span>
       </div>
       <p class="small">{{ section.settings.note | escape }}</p>
       <form action="{{ routes.cart_url }}" method="post">

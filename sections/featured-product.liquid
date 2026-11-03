@@ -36,8 +36,8 @@
   </div>
   <div class="feature__content">
     <div class="feature__titles">
-      <p class="h4">{{ section.settings.eyebrow | escape }}</p>
-      <h2 class="h3">{% if section.settings.title != blank %}{{ section.settings.title | escape }}{% elsif product != blank %}{{ product.title | escape }}{% else %}Pick a product{% endif %}</h2>
+      <p class="h3">{{ section.settings.eyebrow | escape }}</p>
+      <h2 class="h2">{% if section.settings.title != blank %}{{ section.settings.title | escape }}{% elsif product != blank %}{{ product.title | escape }}{% else %}Pick a product{% endif %}</h2>
     </div>
     <div class="feature__titles">
       {%- if blurb != blank -%}

@@ -13,28 +13,24 @@
   --c-icing: #d2be8d;
   --c-line: #241500;
 
-  /* Type family — Adobe Fonts kit (Neue Haas Grotesk) with system fallbacks */
+  /* Type: Neue Haas Grotesk (Adobe Fonts). Values copied from the Figma text styles:
+     desktop size at 1920px, mobile size at 390px, scaling linearly in between. */
   --font-display: "neue-haas-grotesk-display", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-text: "neue-haas-grotesk-text", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  /* Weights and tracking are overridden from Theme settings → Typography (see layout/theme.liquid) */
-  --hw: 600;  /* headings */
-  --lw: 600;  /* links, buttons, nav */
-  --bw: 400;  /* body */
-
-  /* Type scale: desktop value from Figma, mobile value chosen for 390px */
-  --fs-h2: clamp(3rem, 5.229vw + 1.725rem, 8rem);        /* 128 → 48 */
-  --fs-h3: clamp(2.5rem, 3.66vw + 1.608rem, 6rem);       /* 96 → 40 */
-  --fs-h4: clamp(1.75rem, 1.307vw + 1.431rem, 3rem);     /* 48 → 28 */
-  --fs-h5: clamp(1.375rem, 0.654vw + 1.216rem, 2rem);    /* 32 → 22 */
-  --fs-h6: clamp(1.125rem, 0.392vw + 1.029rem, 1.5rem);  /* 24 → 18 */
-  --fs-body-l: clamp(1.125rem, 0.392vw + 1.029rem, 1.5rem); /* 24 → 18 */
-  --fs-body: clamp(1rem, 0.131vw + 0.968rem, 1.125rem);  /* 18 → 16 */
-  --fs-small: 0.875rem;                                   /* 14 */
-  --fs-tagline-l: clamp(0.875rem, 0.261vw + 0.811rem, 1.125rem); /* 18 → 14 */
-  --fs-link-l: clamp(1.25rem, 0.784vw + 1.059rem, 2rem);  /* 32 → 20 */
-  --fs-link: clamp(1rem, 0.523vw + 0.872rem, 1.5rem);     /* 24 → 16 */
-
-  --tracking-tight: -0.01em;
+  --w-medium: 500;  /* 65 Medium */
+  --w-roman: 400;   /* 55 Roman */
+  --fs-h1: clamp(4rem, 3.660vw + 3.1078rem, 7.5rem);  /* 120 → 64 */
+  --fs-h2: clamp(2.25rem, 2.353vw + 1.6765rem, 4.5rem);  /* 72 → 36 */
+  --fs-h3: clamp(1.5rem, 0.523vw + 1.3725rem, 2rem);  /* 32 → 24 */
+  --fs-h4: clamp(1.0625rem, 0.196vw + 1.0147rem, 1.25rem);  /* 20 → 17 */
+  --fs-h5: clamp(0.9375rem, 0.065vw + 0.9216rem, 1rem);  /* 16 → 15 */
+  --fs-body-l: clamp(1.125rem, 0.131vw + 1.0931rem, 1.25rem);  /* 20 → 18 */
+  --fs-body: 1rem;  /* 16 → 16 */
+  --fs-small: 0.8125rem;  /* 13 → 13 */
+  --fs-link-l: clamp(1rem, 0.131vw + 0.9681rem, 1.125rem);  /* 18 → 16 */
+  --fs-link: clamp(0.875rem, 0.065vw + 0.8591rem, 0.9375rem);  /* 15 → 14 */
+  --fs-tagline-l: clamp(0.8125rem, 0.065vw + 0.7966rem, 0.875rem);  /* 14 → 13 */
+  --fs-tagline: 0.75rem;  /* 12 → 12 */
 
   /* Spacing */
   --gutter: clamp(1rem, 1.046vw + 0.745rem, 2rem);        /* 32 → 16 */
@@ -54,9 +50,9 @@ body {
   background: var(--c-surface);
   color: var(--c-text);
   font-family: var(--font-text);
-  font-weight: var(--bw);
+  font-weight: var(--w-roman);
   font-size: var(--fs-body);
-  line-height: 1.3;
+  line-height: 1.45;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -84,41 +80,35 @@ ul, ol { padding: 0; list-style: none; }
 /* --------------------------------------------------------------------------
    Type
    -------------------------------------------------------------------------- */
-.h2, .h3, .h4, .h5, .h6 {
-  font-family: var(--font-display);
-  font-weight: var(--hw);
-  line-height: 1.2;
-  letter-spacing: var(--tracking-tight);
-}
-.h2, .h3, .h4, .h5, .h6, .link, .link-l, .button {
-  /* Mirror Figma's "text-box trim: cap height / baseline": spacing is measured from
-     the letters, not the line box. Chrome 133+ and Safari 18.2+; Firefox ignores it. */
+/* Headings: Figma Heading/H1–H5. H1–H3 Display Pro, H4–H5 Text Pro, all 65 Medium */
+.h1, .h2, .h3, .h4, .h5 { font-weight: var(--w-medium); }
+.h1, .h2, .h3 { font-family: var(--font-display); }
+.h4, .h5 { font-family: var(--font-text); }
+.h1 { font-size: var(--fs-h1); line-height: 1;    letter-spacing: -0.02em; }
+.h2 { font-size: var(--fs-h2); line-height: 1.05; letter-spacing: -0.02em; }
+.h3 { font-size: var(--fs-h3); line-height: 1.15; letter-spacing: -0.01em; }
+.h4 { font-size: var(--fs-h4); line-height: 1.2;  letter-spacing: 0; }
+.h5 { font-size: var(--fs-h5); line-height: 1.25; letter-spacing: 0; }
+.h1, .h2, .h3, .h4, .h5, .link, .link-l, .button {
+  /* Figma "Vertical trim: cap height to baseline": spacing is measured from the
+     letters, not the line box. Chrome 133+ and Safari 18.2+; Firefox ignores it. */
   text-box: trim-both cap alphabetic;
 }
-.h2 { font-size: var(--fs-h2); line-height: 1.05; }
-.h3 { font-size: var(--fs-h3); line-height: 1.1; }
-.h4 { font-size: var(--fs-h4); }
-.h5 { font-size: var(--fs-h5); }
-.h6 { font-size: var(--fs-h6); }
 
-.body-l { font-size: var(--fs-body-l); font-weight: var(--bw); line-height: 1.3; }
-.body { font-size: var(--fs-body); font-weight: var(--bw); line-height: 1.3; }
-.small { font-size: var(--fs-small); font-weight: var(--bw); line-height: 1.3; }
+/* Body: Figma Body/Large, Regular, Small. Text Pro 55 Roman */
+.body-l { font-size: var(--fs-body-l); font-weight: var(--w-roman); line-height: 1.4; }
+.body   { font-size: var(--fs-body);   font-weight: var(--w-roman); line-height: 1.45; }
+.small  { font-size: var(--fs-small);  font-weight: var(--w-roman); line-height: 1.4; }
 
-.tagline {
-  font-size: var(--fs-small); font-weight: 500; line-height: 1.1;
-  text-transform: uppercase; letter-spacing: 0;
-}
-.tagline-l {
-  font-size: var(--fs-tagline-l); font-weight: 500; line-height: 1.1;
-  text-transform: uppercase;
-}
-.link, .link-l {
-  font-family: var(--font-display); font-weight: var(--lw); line-height: 1.5;
-  text-transform: uppercase; letter-spacing: 0;
-}
-.link { font-size: var(--fs-link); }
-.link-l { font-size: var(--fs-link-l); }
+/* Taglines: Figma Tagline/Large, Regular. Text Pro 65 Medium, uppercase */
+.tagline, .tagline-l { font-family: var(--font-text); font-weight: var(--w-medium); line-height: 1.1; text-transform: uppercase; }
+.tagline-l { font-size: var(--fs-tagline-l); letter-spacing: 0.03em; }
+.tagline   { font-size: var(--fs-tagline);   letter-spacing: 0.04em; }
+
+/* Links: Figma Link/Large, Regular. Text Pro 65 Medium, uppercase */
+.link, .link-l { font-family: var(--font-text); font-weight: var(--w-medium); line-height: 1; text-transform: uppercase; }
+.link-l { font-size: var(--fs-link-l); letter-spacing: 0.02em; }
+.link   { font-size: var(--fs-link);   letter-spacing: 0.03em; }
 .link-underline { background: linear-gradient(currentColor, currentColor) 0 100% / 0 2px no-repeat; transition: background-size .25s ease; }
 .link-underline:hover, .link-underline[aria-current="page"] { background-size: 100% 2px; }
 
@@ -144,14 +134,14 @@ ul, ol { padding: 0; list-style: none; }
   display: flex; align-items: center; justify-content: center; width: 100%;
   min-height: 52px; padding: 0 10px; line-height: 1;
   background: var(--c-text); color: var(--c-surface);
-  font-family: var(--font-display); font-weight: var(--lw); font-size: var(--fs-link);
+  font-family: var(--font-text); font-weight: var(--w-medium); font-size: var(--fs-link); letter-spacing: 0.03em;
   text-transform: uppercase; text-align: center;
   transition: opacity .2s ease;
 }
 .button:hover { opacity: .88; }
 .button[disabled], .button[aria-disabled="true"] { opacity: .35; cursor: not-allowed; }
-/* Figma: 24px padding + cap-height text = 65px tall */
-@media (min-width: 990px) { .button { min-height: 65px; } }
+/* Figma: 24px padding + cap-height text = 59px tall */
+@media (min-width: 990px) { .button { min-height: 59px; } }
 
 .inline-form {
   display: flex; align-items: center; gap: 16px;
@@ -160,7 +150,7 @@ ul, ol { padding: 0; list-style: none; }
 .inline-form input[type="email"] {
   flex: 1 1 auto; min-width: 0;
   background: transparent; border: 0; padding: 16px 0;
-  font-size: var(--fs-body-l); font-weight: var(--bw);
+  font-size: var(--fs-body-l); font-weight: var(--w-roman);
 }
 .inline-form button { flex: 0 0 auto; }
 .inline-form input::placeholder { color: var(--c-text); opacity: 1; }
@@ -183,8 +173,8 @@ ul, ol { padding: 0; list-style: none; }
 .site-header__logo img { width: var(--logo-w-mobile, 180px); height: auto; }
 @media (min-width: 990px) { .site-header__logo img { width: var(--logo-w, 372px); } }
 .site-header__wordmark {
-  font-family: var(--font-display); font-weight: var(--hw); font-style: italic;
-  font-size: var(--fs-h5); letter-spacing: var(--tracking-tight); text-transform: uppercase;
+  font-family: var(--font-display); font-weight: var(--w-medium); font-style: italic;
+  font-size: var(--fs-h5); letter-spacing: -0.02em; text-transform: uppercase;
   line-height: 1;
 }
 
@@ -226,7 +216,7 @@ ul, ol { padding: 0; list-style: none; }
 }
 .menu-open .mobile-menu { visibility: visible; opacity: 1; }
 .mobile-menu__links { display: flex; flex-direction: column; gap: 8px; }
-.mobile-menu__links a { font-size: var(--fs-h3); font-weight: var(--hw); letter-spacing: var(--tracking-tight); line-height: 1.1; }
+.mobile-menu__links a { font-family: var(--font-display); font-size: var(--fs-h2); font-weight: var(--w-medium); letter-spacing: -0.02em; line-height: 1.1; }
 @media (min-width: 990px) { .mobile-menu { display: none; } }
 body.menu-open, body.drawer-open { overflow: hidden; }
 
@@ -266,7 +256,9 @@ body.menu-open, body.drawer-open { overflow: hidden; }
 /* --------------------------------------------------------------------------
    Product rows (Arrivals / category rows)
    -------------------------------------------------------------------------- */
-.product-row { padding: var(--section-pad) var(--gutter); }
+.product-row { padding: clamp(80px, 5.229vw + 59.61px, 160px) var(--gutter) 0; }
+/* Figma: 128px gap + 32px inner padding above each row heading; 256px after the last row in a run */
+.shopify-section:has(> .product-row):not(:has(+ .shopify-section > .product-row)) > .product-row { padding-bottom: clamp(96px, 10.458vw + 55.22px, 256px); }
 .product-row--compact { padding-top: calc(var(--section-pad) / 2); padding-bottom: calc(var(--section-pad) / 2); }
 .product-row__head {
   display: flex; align-items: flex-end; justify-content: space-between; gap: 24px;
@@ -304,7 +296,7 @@ body.menu-open, body.drawer-open { overflow: hidden; }
    -------------------------------------------------------------------------- */
 .category-links {
   display: flex; justify-content: space-between; align-items: center; gap: 16px;
-  padding: 49px clamp(16px, 8.4vw - 33px, 128px);
+  padding: 48px clamp(16px, 8.4vw - 33px, 128px);
   border-top: 1px solid var(--c-line); border-bottom: 1px solid var(--c-line);
 }
 @media (max-width: 749px) { .category-links { padding-top: 24px; padding-bottom: 24px; } }
@@ -367,7 +359,7 @@ body.menu-open, body.drawer-open { overflow: hidden; }
 /* --------------------------------------------------------------------------
    Product page
    -------------------------------------------------------------------------- */
-.breadcrumb { padding: 48px 24px 12px; }
+.breadcrumb { padding: 60px 24px 12px; }
 .breadcrumb a:hover { text-decoration: underline; }
 @media (max-width: 989px) { .breadcrumb { padding: 16px var(--gutter) 12px; } }
 

@@ -3,7 +3,7 @@
     {%- for block in section.blocks -%}
       {%- assign menu = linklists[block.settings.menu] -%}
       <div class="site-footer__col" {{ block.shopify_attributes }}>
-        <h2 class="h5">{{ block.settings.heading | escape }}</h2>
+        <h2 class="h4">{{ block.settings.heading | escape }}</h2>
         {%- if menu.links.size > 0 -%}
           <ul class="body">
             {%- for link in menu.links -%}

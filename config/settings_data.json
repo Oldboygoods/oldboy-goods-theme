@@ -10,10 +10,6 @@
 {
   "current": {
     "adobe_fonts_kit": "uwi5xww",
-    "heading_weight": "600",
-    "link_weight": "600",
-    "heading_tracking": "-0.01em",
-    "body_font": "display-400",
     "sections": {
       "cart-drawer": {
         "type": "cart-drawer",

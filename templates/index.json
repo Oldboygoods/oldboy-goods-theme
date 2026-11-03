@@ -6,7 +6,7 @@
     },
     "arrivals": {
       "type": "product-row",
-      "settings": { "heading": "Arrivals", "heading_size": "h2", "collection": "arrivals", "all_products": false, "columns": 5, "link_label": "", "hide_sold": true, "rule": false, "compact": false }
+      "settings": { "heading": "Arrivals", "heading_size": "h1", "collection": "arrivals", "all_products": false, "columns": 5, "link_label": "", "hide_sold": true, "rule": false, "compact": false }
     },
     "categories": {
       "type": "category-links",
@@ -27,15 +27,15 @@
     },
     "furniture": {
       "type": "product-row",
-      "settings": { "heading": "Furniture", "heading_size": "h2", "collection": "furniture", "columns": 3, "link_label": "All furniture", "hide_sold": true, "rule": false, "compact": false }
+      "settings": { "heading": "Furniture", "heading_size": "h1", "collection": "furniture", "columns": 3, "link_label": "All furniture", "hide_sold": true, "rule": false, "compact": false }
     },
     "lighting": {
       "type": "product-row",
-      "settings": { "heading": "Lighting", "heading_size": "h2", "collection": "lighting", "columns": 5, "link_label": "All lighting", "hide_sold": true, "rule": false, "compact": true }
+      "settings": { "heading": "Lighting", "heading_size": "h1", "collection": "lighting", "columns": 5, "link_label": "All lighting", "hide_sold": true, "rule": false, "compact": false }
     },
     "objects": {
       "type": "product-row",
-      "settings": { "heading": "Objects", "heading_size": "h2", "collection": "objects", "columns": 4, "link_label": "All objects", "hide_sold": true, "rule": false, "compact": false }
+      "settings": { "heading": "Objects", "heading_size": "h1", "collection": "objects", "columns": 4, "link_label": "All objects", "hide_sold": true, "rule": false, "compact": false }
     }
   },
   "order": ["hero", "arrivals", "categories", "our-pick", "newsletter", "furniture", "lighting", "objects"]

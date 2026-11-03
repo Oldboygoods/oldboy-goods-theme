@@ -1,5 +1,5 @@
 <div class="cart-page">
-  <h1 class="h2">Basket</h1>
+  <h1 class="h1">Basket</h1>
   {%- if cart.item_count == 0 -%}
     <div class="drawer__empty">
       <p class="body-l">Your basket is empty.</p>
@@ -14,7 +14,7 @@
               {%- if item.image -%}{{ item.image | image_url: width: 300 | image_tag: loading: 'lazy', alt: item.product.title }}{%- endif -%}
             </a>
             <div class="line-item__info">
-              <a class="h6" href="{{ item.url }}">{{ item.product.title | escape }}</a>
+              <a class="h5" href="{{ item.url }}">{{ item.product.title | escape }}</a>
               <p class="body">{{ item.final_line_price | money_without_trailing_zeros }}</p>
               <a class="line-item__remove" href="{{ item.url_to_remove }}">Remove</a>
             </div>
@@ -24,7 +24,7 @@
       <div class="cart-page__foot">
         <div class="drawer__total">
           <span class="tagline-l">Subtotal</span>
-          <span class="h6">{{ cart.total_price | money_without_trailing_zeros }}</span>
+          <span class="h5">{{ cart.total_price | money_without_trailing_zeros }}</span>
         </div>
         <button class="button" type="submit" name="checkout">Checkout</button>
       </div>

@@ -7,7 +7,7 @@
   endif
 -%}
 <div class="collection-head">
-  <h1 class="h2">{{ heading | escape }}</h1>
+  <h1 class="h1">{{ heading | escape }}</h1>
   {%- if collection.description != blank and section.settings.show_description -%}
     <div class="collection-head__desc body-l rte">{{ collection.description }}</div>
   {%- endif -%}

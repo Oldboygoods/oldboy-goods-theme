@@ -96,13 +96,13 @@
   <div class="product-info">
     <div class="product-info__inner">
       <div class="product-info__titles">
-        <h1 class="h4">{{ product.title | escape }}</h1>
+        <h1 class="h3">{{ product.title | escape }}</h1>
         {%- if subtitle != blank -%}
-          <p class="h5">{{ subtitle | escape }}</p>
+          <p class="h4">{{ subtitle | escape }}</p>
         {%- endif -%}
       </div>
 
-      <p class="h6">
+      <p class="h5">
         {%- if product.available -%}
           {% render 'price', variant: current_variant %}
         {%- else -%}

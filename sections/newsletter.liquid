@@ -1,5 +1,5 @@
 <section class="newsletter">
-  <h2 class="h4">{{ section.settings.heading | escape }}</h2>
+  <h2 class="h3">{{ section.settings.heading | escape }}</h2>
   <div class="newsletter__form">
     {%- form 'customer', id: 'NewsletterStrip' -%}
       <input type="hidden" name="contact[tags]" value="newsletter">
