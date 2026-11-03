@@ -4,13 +4,22 @@
       {%- assign menu = linklists[block.settings.menu] -%}
       <div class="site-footer__col" {{ block.shopify_attributes }}>
         <h2 class="h4">{{ block.settings.heading | escape }}</h2>
-        {%- if menu.links.size > 0 -%}
-          <ul class="body">
+        <ul class="body">
+          {%- if block.settings.menu != blank and menu.links.size > 0 -%}
             {%- for link in menu.links -%}
               <li><a class="link-underline" href="{{ link.url }}">{{ link.title | escape }}</a></li>
             {%- endfor -%}
-          </ul>
-        {%- endif -%}
+          {%- else -%}
+            {%- for i in (1..6) -%}
+              {%- capture label_key %}link_{{ i }}_label{% endcapture -%}
+              {%- capture url_key %}link_{{ i }}_url{% endcapture -%}
+              {%- assign label = block.settings[label_key] -%}
+              {%- if label != blank -%}
+                <li><a class="link-underline" href="{{ block.settings[url_key] | default: '#' }}">{{ label | escape }}</a></li>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+        </ul>
       </div>
     {%- endfor -%}
   </div>
@@ -65,10 +74,81 @@
   "blocks": [
     {
       "type": "menu",
-      "name": "Menu column",
+      "name": "Link column",
       "settings": [
-        { "type": "text", "id": "heading", "label": "Heading", "default": "Shop" },
-        { "type": "link_list", "id": "menu", "label": "Menu", "default": "footer" }
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Shop"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu (optional)",
+          "info": "If chosen, the menu's links are used instead of the links below."
+        },
+        {
+          "type": "text",
+          "id": "link_1_label",
+          "label": "Link 1 label"
+        },
+        {
+          "type": "text",
+          "id": "link_1_url",
+          "label": "Link 1 address",
+          "info": "e.g. /collections/furniture or /pages/cookies. Leave empty for a placeholder link."
+        },
+        {
+          "type": "text",
+          "id": "link_2_label",
+          "label": "Link 2 label"
+        },
+        {
+          "type": "text",
+          "id": "link_2_url",
+          "label": "Link 2 address"
+        },
+        {
+          "type": "text",
+          "id": "link_3_label",
+          "label": "Link 3 label"
+        },
+        {
+          "type": "text",
+          "id": "link_3_url",
+          "label": "Link 3 address"
+        },
+        {
+          "type": "text",
+          "id": "link_4_label",
+          "label": "Link 4 label"
+        },
+        {
+          "type": "text",
+          "id": "link_4_url",
+          "label": "Link 4 address"
+        },
+        {
+          "type": "text",
+          "id": "link_5_label",
+          "label": "Link 5 label"
+        },
+        {
+          "type": "text",
+          "id": "link_5_url",
+          "label": "Link 5 address"
+        },
+        {
+          "type": "text",
+          "id": "link_6_label",
+          "label": "Link 6 label"
+        },
+        {
+          "type": "text",
+          "id": "link_6_url",
+          "label": "Link 6 address"
+        }
       ]
     }
   ],
@@ -76,10 +156,30 @@
     {
       "name": "Footer",
       "blocks": [
-        { "type": "menu", "settings": { "heading": "Shop" } },
-        { "type": "menu", "settings": { "heading": "Help" } },
-        { "type": "menu", "settings": { "heading": "About" } },
-        { "type": "menu", "settings": { "heading": "Legal" } }
+        {
+          "type": "menu",
+          "settings": {
+            "heading": "Shop"
+          }
+        },
+        {
+          "type": "menu",
+          "settings": {
+            "heading": "Help"
+          }
+        },
+        {
+          "type": "menu",
+          "settings": {
+            "heading": "About"
+          }
+        },
+        {
+          "type": "menu",
+          "settings": {
+            "heading": "Legal"
+          }
+        }
       ]
     }
   ]

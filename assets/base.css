@@ -502,3 +502,18 @@ body.menu-open, body.drawer-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
 }
+
+/* --------------------------------------------------------------------------
+   Rich text pages and Shopify policy pages (/policies/…)
+   -------------------------------------------------------------------------- */
+.shopify-policy__container { max-width: none !important; padding: 48px var(--gutter) var(--section-pad) !important; margin: 0 !important; }
+@media (min-width: 990px) { .shopify-policy__container { padding: 96px 32px var(--section-pad) !important; } }
+.shopify-policy__title h1 { font-family: var(--font-display); font-weight: var(--w-display-medium); font-size: var(--fs-h1); line-height: 1; letter-spacing: -0.02em; text-align: left; margin: 0; text-box: trim-both cap alphabetic; }
+.shopify-policy__body { max-width: 738px; margin-top: 64px; }
+.rte h2, .shopify-policy__body h2 { font-family: var(--font-text); font-weight: var(--w-medium); font-size: var(--fs-h4); line-height: 1.2; margin: 48px 0 16px; }
+.rte h3, .shopify-policy__body h3 { font-family: var(--font-text); font-weight: var(--w-medium); font-size: var(--fs-h5); line-height: 1.25; margin: 32px 0 12px; }
+.rte > :first-child, .shopify-policy__body .rte > :first-child { margin-top: 0; }
+.shopify-policy__body p, .shopify-policy__body li { font-size: var(--fs-body); line-height: 1.45; }
+.shopify-policy__body p + p, .rte li + li, .shopify-policy__body li + li { margin-top: 0.6em; }
+.shopify-policy__body ul, .rte ul { list-style: disc; padding-left: 1.2em; margin: 0.8em 0; }
+.shopify-policy__body a { text-decoration: underline; text-underline-offset: 3px; }

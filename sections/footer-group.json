@@ -5,17 +5,70 @@
     "footer": {
       "type": "footer",
       "blocks": {
-        "shop": { "type": "menu", "settings": { "heading": "Shop", "menu": "footer-shop" } },
-        "help": { "type": "menu", "settings": { "heading": "Help", "menu": "footer-help" } },
-        "about": { "type": "menu", "settings": { "heading": "About", "menu": "footer-about" } },
-        "legal": { "type": "menu", "settings": { "heading": "Legal", "menu": "footer-legal" } }
+        "shop": {
+          "type": "menu",
+          "settings": {
+            "heading": "Shop",
+            "menu": "",
+            "link_1_label": "Furniture",
+            "link_1_url": "/collections/furniture",
+            "link_2_label": "Lighting",
+            "link_2_url": "/collections/lighting",
+            "link_3_label": "Objects",
+            "link_3_url": "/collections/objects"
+          }
+        },
+        "help": {
+          "type": "menu",
+          "settings": {
+            "heading": "Help",
+            "menu": "",
+            "link_1_label": "Shipping",
+            "link_1_url": "/policies/shipping-policy",
+            "link_2_label": "Returns",
+            "link_2_url": "/policies/refund-policy",
+            "link_3_label": "FAQ",
+            "link_3_url": ""
+          }
+        },
+        "about": {
+          "type": "menu",
+          "settings": {
+            "heading": "About",
+            "menu": "",
+            "link_1_label": "About Oldboy",
+            "link_1_url": ""
+          }
+        },
+        "legal": {
+          "type": "menu",
+          "settings": {
+            "heading": "Legal",
+            "menu": "",
+            "link_1_label": "Terms and Conditions",
+            "link_1_url": "/policies/terms-of-service",
+            "link_2_label": "Privacy Policy",
+            "link_2_url": "/policies/privacy-policy",
+            "link_3_label": "Cookies",
+            "link_3_url": "/pages/cookies",
+            "link_4_label": "Accessibility",
+            "link_4_url": "/pages/accessibility"
+          }
+        }
       },
-      "block_order": ["shop", "help", "about", "legal"],
+      "block_order": [
+        "shop",
+        "help",
+        "about",
+        "legal"
+      ],
       "settings": {
         "success_message": "Thanks — you're on the list.",
         "consent_text": "By providing your email address, you agree to our privacy policy"
       }
     }
   },
-  "order": ["footer"]
+  "order": [
+    "footer"
+  ]
 }
