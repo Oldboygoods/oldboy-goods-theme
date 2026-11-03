@@ -9,7 +9,6 @@
           "type": "menu",
           "settings": {
             "heading": "Shop",
-            "menu": "",
             "link_1_label": "Furniture",
             "link_1_url": "/collections/furniture",
             "link_2_label": "Lighting",
@@ -22,29 +21,24 @@
           "type": "menu",
           "settings": {
             "heading": "Help",
-            "menu": "",
             "link_1_label": "Shipping",
             "link_1_url": "/policies/shipping-policy",
             "link_2_label": "Returns",
             "link_2_url": "/policies/refund-policy",
-            "link_3_label": "FAQ",
-            "link_3_url": ""
+            "link_3_label": "FAQ"
           }
         },
         "about": {
           "type": "menu",
           "settings": {
             "heading": "About",
-            "menu": "",
-            "link_1_label": "About Oldboy",
-            "link_1_url": ""
+            "link_1_label": "About Oldboy"
           }
         },
         "legal": {
           "type": "menu",
           "settings": {
             "heading": "Legal",
-            "menu": "",
             "link_1_label": "Terms and Conditions",
             "link_1_url": "/policies/terms-of-service",
             "link_2_label": "Privacy Policy",

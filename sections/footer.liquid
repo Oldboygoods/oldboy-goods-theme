@@ -10,6 +10,31 @@
               <li><a class="link-underline" href="{{ link.url }}">{{ link.title | escape }}</a></li>
             {%- endfor -%}
           {%- else -%}
+            {%- comment -%} Built-in defaults per column, used until links are set in the theme editor {%- endcomment -%}
+            {%- assign has_links = false -%}
+            {%- for i in (1..6) -%}
+              {%- capture k %}link_{{ i }}_label{% endcapture -%}
+              {%- if block.settings[k] != blank -%}{%- assign has_links = true -%}{%- endif -%}
+            {%- endfor -%}
+            {%- unless has_links -%}
+              {%- case block.settings.heading -%}
+                {%- when 'Shop' -%}
+                  <li><a class="link-underline" href="/collections/furniture">Furniture</a></li>
+                  <li><a class="link-underline" href="/collections/lighting">Lighting</a></li>
+                  <li><a class="link-underline" href="/collections/objects">Objects</a></li>
+                {%- when 'Help' -%}
+                  <li><a class="link-underline" href="/policies/shipping-policy">Shipping</a></li>
+                  <li><a class="link-underline" href="/policies/refund-policy">Returns</a></li>
+                  <li><a class="link-underline" href="#">FAQ</a></li>
+                {%- when 'About' -%}
+                  <li><a class="link-underline" href="#">About Oldboy</a></li>
+                {%- when 'Legal' -%}
+                  <li><a class="link-underline" href="/policies/terms-of-service">Terms and Conditions</a></li>
+                  <li><a class="link-underline" href="/policies/privacy-policy">Privacy Policy</a></li>
+                  <li><a class="link-underline" href="/pages/cookies">Cookies</a></li>
+                  <li><a class="link-underline" href="/pages/accessibility">Accessibility</a></li>
+              {%- endcase -%}
+            {%- endunless -%}
             {%- for i in (1..6) -%}
               {%- capture label_key %}link_{{ i }}_label{% endcapture -%}
               {%- capture url_key %}link_{{ i }}_url{% endcapture -%}
