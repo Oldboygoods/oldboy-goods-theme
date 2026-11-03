@@ -1,0 +1,29 @@
+<section class="newsletter">
+  <h2 class="h4">{{ section.settings.heading | escape }}</h2>
+  <div class="newsletter__form">
+    {%- form 'customer', id: 'NewsletterStrip' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <div class="inline-form">
+        <label class="visually-hidden" for="NewsletterStripEmail">Email address</label>
+        <input id="NewsletterStripEmail" type="email" name="contact[email]" placeholder="Email address" autocomplete="email" required>
+        <button class="link-l" type="submit">Subscribe</button>
+      </div>
+      {%- if form.posted_successfully? -%}
+        <p class="form-message" role="status">{{ section.settings.success_message | escape }}</p>
+      {%- elsif form.errors -%}
+        <p class="form-message" role="alert">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter strip",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Be the first to know about drops" },
+    { "type": "text", "id": "success_message", "label": "Success message", "default": "Thanks — you're on the list." }
+  ],
+  "presets": [{ "name": "Newsletter strip" }]
+}
+{% endschema %}

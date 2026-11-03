@@ -1,0 +1,68 @@
+{%- liquid
+  assign product = section.settings.product
+  if product == blank and section.settings.collection != blank
+    for p in section.settings.collection.products limit: 1
+      assign product = p
+    endfor
+  endif
+
+  assign image = section.settings.image
+  if image == blank and product != blank
+    assign image = product.featured_media.preview_image
+  endif
+
+  if section.settings.text != blank
+    assign blurb = section.settings.text
+  elsif product != blank
+    assign blurb = product.description | strip_html | truncatewords: section.settings.words
+  endif
+-%}
+<section class="feature">
+  <div class="feature__media">
+    {%- if image != blank -%}
+      {{
+        image
+        | image_url: width: 2400
+        | image_tag:
+          loading: 'lazy',
+          widths: '600, 900, 1200, 1600, 2048, 2400',
+          sizes: '(min-width: 990px) 53vw, 100vw',
+          alt: product.title,
+          style: image.presentation.focal_point | prepend: 'object-position: '
+      }}
+    {%- else -%}
+      {{ 'product-apparel-1' | placeholder_svg_tag }}
+    {%- endif -%}
+  </div>
+  <div class="feature__content">
+    <div class="feature__titles">
+      <p class="h4">{{ section.settings.eyebrow | escape }}</p>
+      <h2 class="h3">{% if section.settings.title != blank %}{{ section.settings.title | escape }}{% elsif product != blank %}{{ product.title | escape }}{% else %}Pick a product{% endif %}</h2>
+    </div>
+    <div class="feature__titles">
+      {%- if blurb != blank -%}
+        <div class="feature__text body-l">{{ blurb }}</div>
+      {%- endif -%}
+      {%- if product != blank -%}
+        <a class="link-l link-underline" href="{{ product.url }}" style="align-self: flex-start;">{{ section.settings.link_label | escape }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Our pick",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Small heading", "default": "Our Pick" },
+    { "type": "collection", "id": "collection", "label": "Collection", "info": "Shows the first product in this collection (e.g. an \"Our Pick\" collection). Change the pick in Shopify, not here." },
+    { "type": "product", "id": "product", "label": "Or choose a product", "info": "Overrides the collection." },
+    { "type": "text", "id": "title", "label": "Short title (optional)", "info": "The big heading, e.g. \"Cow Hide Chaise\". Leave empty to use the full product title." },
+    { "type": "image_picker", "id": "image", "label": "Image override (optional)", "info": "Leave empty to use the product's first photo." },
+    { "type": "richtext", "id": "text", "label": "Text override (optional)", "info": "Leave empty to use the start of the product description." },
+    { "type": "range", "id": "words", "label": "Words of description to show", "min": 20, "max": 80, "step": 5, "default": 50 },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "View item" }
+  ],
+  "presets": [{ "name": "Our pick" }]
+}
+{% endschema %}

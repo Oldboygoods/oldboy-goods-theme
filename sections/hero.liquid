@@ -1,0 +1,65 @@
+{%- liquid
+  assign image = section.settings.image
+  assign image_mobile = section.settings.image_mobile | default: image
+-%}
+<section class="hero" style="--hero-ratio: {{ section.settings.ratio }}; --hero-ratio-mobile: {{ section.settings.ratio_mobile }};">
+  {%- if section.settings.link != blank -%}<a href="{{ section.settings.link }}" aria-label="{{ section.settings.alt | escape }}">{%- endif -%}
+  <div class="hero__media">
+    {%- if image != blank -%}
+      <picture>
+        {%- if section.settings.image_mobile != blank -%}
+          <source media="(max-width: 749px)" srcset="{{ image_mobile | image_url: width: 750 }} 750w, {{ image_mobile | image_url: width: 1100 }} 1100w, {{ image_mobile | image_url: width: 1500 }} 1500w" sizes="100vw">
+        {%- endif -%}
+        {{
+          image
+          | image_url: width: 3840
+          | image_tag:
+            loading: 'eager',
+            fetchpriority: 'high',
+            widths: '750, 1100, 1500, 1920, 2400, 3000, 3840',
+            sizes: '100vw',
+            alt: section.settings.alt,
+            style: image.presentation.focal_point | prepend: 'object-position: '
+        }}
+      </picture>
+    {%- else -%}
+      <div class="hero__placeholder">{{ 'lifestyle-1' | placeholder_svg_tag }}</div>
+    {%- endif -%}
+  </div>
+  {%- if section.settings.link != blank -%}</a>{%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Hero image",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "image_picker", "id": "image_mobile", "label": "Mobile image (optional)", "info": "Use a portrait crop for phones. Leave empty to reuse the main image." },
+    { "type": "text", "id": "alt", "label": "Image description (for screen readers)", "default": "Oldboy Goods" },
+    { "type": "url", "id": "link", "label": "Link (optional)" },
+    {
+      "type": "select",
+      "id": "ratio",
+      "label": "Desktop shape",
+      "options": [
+        { "value": "1920 / 808", "label": "Wide (as designed)" },
+        { "value": "16 / 9", "label": "16:9" },
+        { "value": "3 / 2", "label": "3:2" }
+      ],
+      "default": "1920 / 808"
+    },
+    {
+      "type": "select",
+      "id": "ratio_mobile",
+      "label": "Mobile shape",
+      "options": [
+        { "value": "4 / 5", "label": "Portrait 4:5" },
+        { "value": "1 / 1", "label": "Square" },
+        { "value": "3 / 2", "label": "Landscape 3:2" }
+      ],
+      "default": "4 / 5"
+    }
+  ],
+  "presets": [{ "name": "Hero image" }]
+}
+{% endschema %}

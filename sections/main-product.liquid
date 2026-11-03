@@ -1,0 +1,233 @@
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign tags_down = product.tags | join: '|' | downcase | split: '|'
+
+  assign category_title = ''
+  assign category_url = ''
+  if tags_down contains 'furniture'
+    assign category_title = 'Furniture'
+    assign category_url = collections['furniture'].url
+  elsif tags_down contains 'lighting'
+    assign category_title = 'Lighting'
+    assign category_url = collections['lighting'].url
+  elsif tags_down contains 'objects'
+    assign category_title = 'Objects'
+    assign category_url = collections['objects'].url
+  endif
+  if collection
+    assign category_title = collection.title
+    assign category_url = collection.url
+  endif
+
+  assign is_furniture = false
+  if tags_down contains 'furniture'
+    assign is_furniture = true
+  endif
+
+  assign origin = product.metafields.custom.origin.value
+  assign period = product.metafields.custom.period.value
+  assign size = product.metafields.custom.size.value
+  assign condition = product.metafields.custom.condition.value
+  assign material = product.metafields.custom.material.value
+  assign designer = product.metafields.custom.designer.value
+  assign notes = product.metafields.custom.notes.value
+
+  assign maker = product.vendor
+  assign maker_down = maker | downcase | strip
+  assign shop_down = shop.name | downcase
+  assign designer_down = designer | downcase | strip
+  if maker_down == 'unknown' or maker_down == shop_down or maker_down == '' or maker_down == designer_down
+    assign maker = blank
+  endif
+
+  # Subtitle under the title, e.g. "Netherlands, 1960s": origin up to the first semicolon, skipped when uncertain
+  assign origin_short = origin | split: ';' | first | strip
+  assign origin_down = origin_short | downcase
+  if origin_down contains 'unknown' or origin_down contains 'unconfirmed'
+    assign origin_short = blank
+  endif
+  assign subtitle = ''
+  if origin_short != blank and period != blank
+    assign subtitle = origin_short | append: ', ' | append: period
+  elsif origin_short != blank
+    assign subtitle = origin_short
+  elsif period != blank
+    assign subtitle = period
+  endif
+-%}
+
+<nav class="breadcrumb tagline" aria-label="Breadcrumb">
+  <a href="{{ routes.root_url }}">Home</a>
+  {%- if category_title != blank %} / <a href="{{ category_url | default: routes.all_products_collection_url }}">{{ category_title | escape }}</a>{% endif -%}
+</nav>
+
+<div class="product" data-product>
+  <div class="gallery" data-gallery>
+    <div class="gallery__grid" data-gallery-track>
+      {%- for media in product.media -%}
+        {%- if media.preview_image -%}
+          {%- liquid
+            assign img_loading = 'lazy'
+            if forloop.index <= 2
+              assign img_loading = 'eager'
+            endif
+          -%}
+          <div class="gallery__item">
+            {{
+              media.preview_image
+              | image_url: width: 2000
+              | image_tag:
+                loading: img_loading,
+                widths: '600, 800, 1100, 1400, 1700, 2000',
+                sizes: '(min-width: 990px) 29vw, 100vw',
+                alt: media.alt | default: product.title
+            }}
+          </div>
+        {%- endif -%}
+      {%- else -%}
+        <div class="gallery__item">{{ 'product-1' | placeholder_svg_tag }}</div>
+      {%- endfor -%}
+    </div>
+    {%- if product.media.size > 1 -%}
+      <p class="gallery__counter tagline" aria-hidden="true"><span data-gallery-index>1</span> / {{ product.media.size }}</p>
+    {%- endif -%}
+  </div>
+
+  <div class="product-info">
+    <div class="product-info__inner">
+      <div class="product-info__titles">
+        <h1 class="h4">{{ product.title | escape }}</h1>
+        {%- if subtitle != blank -%}
+          <p class="h5">{{ subtitle | escape }}</p>
+        {%- endif -%}
+      </div>
+
+      <p class="h6">
+        {%- if product.available -%}
+          {% render 'price', variant: current_variant %}
+        {%- else -%}
+          Sold
+        {%- endif -%}
+      </p>
+
+      <div class="product-info__buy">
+        {%- form 'product', product, data-product-form: '', novalidate: 'novalidate' -%}
+          <input type="hidden" name="id" value="{{ current_variant.id }}">
+          {%- if product.available -%}
+            <button class="button" type="submit" name="add" data-add-button>{{ section.settings.add_label | escape }}</button>
+          {%- else -%}
+            <button class="button" type="button" disabled>{{ section.settings.sold_label | escape }}</button>
+          {%- endif -%}
+          <p class="product-info__error" role="alert" data-form-error></p>
+        {%- endform -%}
+        {%- if section.settings.trust_line != blank -%}
+          <p class="product-info__trust tagline">{{ section.settings.trust_line | escape }}</p>
+        {%- endif -%}
+      </div>
+
+      <div class="accordions">
+        <details class="accordion" open>
+          <summary>
+            <span class="tagline-l">Details and dimensions</span>
+            {% render 'icon-chevron' %}
+          </summary>
+          <div class="accordion__body body">
+            {%- if product.description != blank -%}
+              <div class="rte">{{ product.description }}</div>
+            {%- endif -%}
+            {%- if designer != blank or maker != blank or origin != blank or period != blank or material != blank or size != blank or condition != blank -%}
+              <dl class="spec-list">
+                {%- if designer != blank -%}<dt>Designer</dt><dd>{{ designer | escape }}</dd>{%- endif -%}
+                {%- if maker != blank -%}<dt>Maker</dt><dd>{{ maker | escape }}</dd>{%- endif -%}
+                {%- if origin != blank -%}<dt>Origin</dt><dd>{{ origin | escape }}</dd>{%- endif -%}
+                {%- if period != blank -%}<dt>Period</dt><dd>{{ period | escape }}</dd>{%- endif -%}
+                {%- if material != blank -%}<dt>Materials</dt><dd>{{ material | escape }}</dd>{%- endif -%}
+                {%- if size != blank -%}<dt>Dimensions</dt><dd>{{ size | escape | newline_to_br }}</dd>{%- endif -%}
+                {%- if condition != blank -%}<dt>Condition</dt><dd>{{ condition | escape | newline_to_br }}</dd>{%- endif -%}
+                {%- if notes != blank and section.settings.show_notes -%}<dt>Notes</dt><dd>{{ notes | escape | newline_to_br }}</dd>{%- endif -%}
+              </dl>
+            {%- endif -%}
+          </div>
+        </details>
+
+        <details class="accordion">
+          <summary>
+            <span class="tagline-l">Shipping</span>
+            {% render 'icon-chevron' %}
+          </summary>
+          <div class="accordion__body body rte">
+            {%- if is_furniture -%}
+              {{ section.settings.shipping_furniture }}
+            {%- else -%}
+              {{ section.settings.shipping_parcel }}
+            {%- endif -%}
+          </div>
+        </details>
+
+        {%- if section.settings.faq_page != blank or section.settings.faq_text != blank -%}
+          <details class="accordion">
+            <summary>
+              <span class="tagline-l">FAQs</span>
+              {% render 'icon-chevron' %}
+            </summary>
+            <div class="accordion__body body rte">
+              {%- if section.settings.faq_text != blank -%}
+                {{ section.settings.faq_text }}
+              {%- else -%}
+                {{ section.settings.faq_page.content }}
+              {%- endif -%}
+            </div>
+          </details>
+        {%- endif -%}
+
+        <details class="accordion">
+          <summary>
+            <span class="tagline-l">Contact</span>
+            {% render 'icon-chevron' %}
+          </summary>
+          <div class="accordion__body body rte">
+            {{ section.settings.contact_text }}
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+</div>
+
+{%- comment -%} Product structured data for Google {%- endcomment -%}
+<script type="application/ld+json">
+  {{ product | structured_data }}
+</script>
+
+{% schema %}
+{
+  "name": "Product",
+  "settings": [
+    { "type": "text", "id": "add_label", "label": "Add to cart label", "default": "Add to cart" },
+    { "type": "text", "id": "sold_label", "label": "Sold button label", "default": "Sold" },
+    { "type": "checkbox", "id": "show_notes", "label": "Show the Notes field", "default": true, "info": "Maker's marks, attributions and similar. The Sourced field is never shown." },
+    { "type": "text", "id": "trust_line", "label": "Line under the button", "default": "14 day returns • fully insured transit • secure checkout" },
+    {
+      "type": "richtext",
+      "id": "shipping_parcel",
+      "label": "Shipping text: lighting & objects",
+      "default": "<p>Free UK delivery, fully insured and carefully packed. Most orders are dispatched within 3 working days.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "shipping_furniture",
+      "label": "Shipping text: furniture",
+      "info": "Shown on products tagged 'furniture'.",
+      "default": "<p>Buy online and we'll be in touch within one working day to arrange delivery. Collect for free, or we'll quote a specialist furniture courier to anywhere in the UK.</p>"
+    },
+    { "type": "page", "id": "faq_page", "label": "FAQ page", "info": "Shows this page's content in the FAQs panel." },
+    { "type": "richtext", "id": "faq_text", "label": "Or FAQ text", "info": "Overrides the FAQ page." },
+    {
+      "type": "richtext",
+      "id": "contact_text",
+      "label": "Contact text",
+      "default": "<p>Questions about this piece? Email us and we'll reply the same day.</p>"
+    }
+  ]
+}
+{% endschema %}

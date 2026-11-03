@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-collection",
+      "blocks": {
+        "all": { "type": "tab", "settings": { "label": "All" } },
+        "furniture": { "type": "tab", "settings": { "collection": "furniture", "label": "Furniture" } },
+        "lighting": { "type": "tab", "settings": { "collection": "lighting", "label": "Lighting" } },
+        "objects": { "type": "tab", "settings": { "collection": "objects", "label": "Objects" } }
+      },
+      "block_order": ["all", "furniture", "lighting", "objects"],
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}

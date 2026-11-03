@@ -1,0 +1,12 @@
+{%- comment -%}
+  Price display: £395 for whole pounds, £395.50 otherwise.
+  Accepts: product or variant
+{%- endcomment -%}
+{%- liquid
+  if variant
+    assign amount = variant.price
+  else
+    assign amount = product.price
+  endif
+-%}
+{{ amount | money_without_trailing_zeros }}

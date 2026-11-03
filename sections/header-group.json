@@ -1,0 +1,16 @@
+{
+  "type": "header",
+  "name": "Header group",
+  "sections": {
+    "header": {
+      "type": "header",
+      "settings": {
+        "menu": "main-menu",
+        "cart_label": "Cart",
+        "logo_width": 372,
+        "logo_width_mobile": 180
+      }
+    }
+  },
+  "order": ["header"]
+}

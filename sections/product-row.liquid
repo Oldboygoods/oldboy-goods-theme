@@ -1,0 +1,75 @@
+{%- liquid
+  assign collection = section.settings.collection
+  assign products = collection.products
+  assign collection_url = collection.url
+  if section.settings.all_products
+    assign products = collections['all'].products | sort: 'created_at' | reverse
+    assign collection_url = routes.all_products_collection_url
+  endif
+  assign product_count = products | size
+  assign limit = section.settings.columns
+  assign shown = 0
+  assign card_width = 100 | divided_by: limit
+  assign sizes = '(min-width: 750px) ' | append: card_width | append: 'vw, 72vw'
+-%}
+<section class="product-row{% if section.settings.compact %} product-row--compact{% endif %}{% if section.settings.rule %} rule-top{% endif %}" style="--cols: {{ limit }};">
+  <div class="product-row__head">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="{{ section.settings.heading_size }}">{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+    {%- if section.settings.link_label != blank and collection_url != blank -%}
+      <a class="link link-underline" href="{{ collection_url }}">{{ section.settings.link_label | escape }}</a>
+    {%- endif -%}
+  </div>
+
+  {%- if product_count > 0 -%}
+    <div class="product-row__grid">
+      {%- for product in products limit: 50 -%}
+        {%- if section.settings.hide_sold and product.available == false -%}{% continue %}{%- endif -%}
+        {%- if shown >= limit -%}{% break %}{%- endif -%}
+        {% render 'product-card', product: product, sizes: sizes %}
+        {%- assign shown = shown | plus: 1 -%}
+      {%- endfor -%}
+    </div>
+  {%- else -%}
+    <div class="product-row__grid">
+      {%- for i in (1..limit) -%}
+        <div class="card">
+          <div class="card__media">{{ 'product-' | append: i | placeholder_svg_tag }}</div>
+          <div class="card__info">
+            <p class="card__title h6">Choose a collection in the theme editor</p>
+            <p class="card__price body">£—</p>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Product row",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Arrivals" },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "h2", "label": "Extra large" },
+        { "value": "h3", "label": "Large" },
+        { "value": "h4", "label": "Medium" }
+      ],
+      "default": "h2"
+    },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "checkbox", "id": "all_products", "label": "Show newest of all products instead", "default": false, "info": "Ignores the collection above." },
+    { "type": "range", "id": "columns", "label": "Products shown (desktop columns)", "min": 2, "max": 6, "step": 1, "default": 5 },
+    { "type": "text", "id": "link_label", "label": "Link label", "info": "Shown top right, links to the collection. Leave empty to hide." },
+    { "type": "checkbox", "id": "hide_sold", "label": "Hide sold pieces", "default": true },
+    { "type": "checkbox", "id": "rule", "label": "Line above section", "default": false },
+    { "type": "checkbox", "id": "compact", "label": "Less vertical space", "default": false }
+  ],
+  "presets": [{ "name": "Product row" }]
+}
+{% endschema %}

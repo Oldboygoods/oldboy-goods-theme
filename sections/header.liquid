@@ -1,0 +1,85 @@
+{%- liquid
+  assign menu = linklists[section.settings.menu]
+-%}
+<header class="site-header" data-header style="--logo-w: {{ section.settings.logo_width }}px; --logo-w-mobile: {{ section.settings.logo_width_mobile }}px;">
+  <a class="site-header__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name }} home">
+    {%- if settings.logo != blank -%}
+      {{
+        settings.logo
+        | image_url: width: 800
+        | image_tag: loading: 'eager', widths: '200, 400, 800', sizes: '(min-width: 990px) 372px, 180px', alt: shop.name
+      }}
+    {%- else -%}
+      <span class="site-header__wordmark">{{ shop.name }}</span>
+    {%- endif -%}
+  </a>
+
+  {%- if menu.links.size > 0 -%}
+    <nav class="site-nav" aria-label="Main">
+      {%- for link in menu.links -%}
+        <a class="link link-underline" href="{{ link.url }}"{% if link.active or link.child_active %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>
+      {%- endfor -%}
+    </nav>
+  {%- endif -%}
+
+  <div class="site-header__actions">
+    <a class="cart-link link" href="{{ routes.cart_url }}" data-cart-open aria-label="Basket, {{ cart.item_count }} items">
+      {% render 'icon-basket' %}
+      <span class="cart-link__label">{{ section.settings.cart_label | escape }}</span>
+      <span class="cart-link__count" data-cart-count>{% if cart.item_count > 0 %}{{ cart.item_count }}{% endif %}</span>
+    </a>
+    <button class="menu-toggle" type="button" aria-controls="MobileMenu" aria-expanded="false" data-menu-toggle>
+      <span></span>
+      <span class="visually-hidden">Menu</span>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="MobileMenu" data-mobile-menu>
+  <nav class="mobile-menu__links" aria-label="Mobile">
+    {%- for link in menu.links -%}
+      <a href="{{ link.url }}">{{ link.title | escape }}</a>
+    {%- endfor -%}
+  </nav>
+</div>
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "section-header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "text",
+      "id": "cart_label",
+      "label": "Cart label",
+      "default": "Cart"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo width (desktop)",
+      "min": 160,
+      "max": 480,
+      "step": 4,
+      "unit": "px",
+      "default": 372
+    },
+    {
+      "type": "range",
+      "id": "logo_width_mobile",
+      "label": "Logo width (mobile)",
+      "min": 100,
+      "max": 260,
+      "step": 4,
+      "unit": "px",
+      "default": 180
+    }
+  ]
+}
+{% endschema %}

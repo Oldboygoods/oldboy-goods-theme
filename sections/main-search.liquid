@@ -1,0 +1,30 @@
+<div class="collection-head">
+  <h1 class="h2">Search</h1>
+</div>
+<form class="search-form" action="{{ routes.search_url }}" method="get" role="search">
+  <div class="inline-form">
+    <label class="visually-hidden" for="SearchInput">Search</label>
+    <input id="SearchInput" type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search" style="flex:1 1 auto; min-width:0; background:transparent; border:0; padding:16px 0; font-size: var(--fs-body-l);">
+    <input type="hidden" name="type" value="product">
+    <button class="link-l" type="submit">Go</button>
+  </div>
+</form>
+{%- if search.performed -%}
+  {%- paginate search.results by 48 -%}
+    {%- if search.results_count > 0 -%}
+      <div class="collection-grid">
+        {%- for item in search.results -%}
+          {%- if item.object_type == 'product' -%}
+            {% render 'product-card', product: item %}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <p class="collection-empty body-l">No results for "{{ search.terms | escape }}".</p>
+    {%- endif -%}
+  {%- endpaginate -%}
+{%- endif -%}
+
+{% schema %}
+{ "name": "Search" }
+{% endschema %}

@@ -1,0 +1,37 @@
+<div class="cart-page">
+  <h1 class="h2">Basket</h1>
+  {%- if cart.item_count == 0 -%}
+    <div class="drawer__empty">
+      <p class="body-l">Your basket is empty.</p>
+      <a class="link link-underline" href="{{ routes.all_products_collection_url }}">Shop all</a>
+    </div>
+  {%- else -%}
+    <form action="{{ routes.cart_url }}" method="post" id="CartForm">
+      <ul>
+        {%- for item in cart.items -%}
+          <li class="line-item">
+            <a class="line-item__media" href="{{ item.url }}" tabindex="-1">
+              {%- if item.image -%}{{ item.image | image_url: width: 300 | image_tag: loading: 'lazy', alt: item.product.title }}{%- endif -%}
+            </a>
+            <div class="line-item__info">
+              <a class="h6" href="{{ item.url }}">{{ item.product.title | escape }}</a>
+              <p class="body">{{ item.final_line_price | money_without_trailing_zeros }}</p>
+              <a class="line-item__remove" href="{{ item.url_to_remove }}">Remove</a>
+            </div>
+          </li>
+        {%- endfor -%}
+      </ul>
+      <div class="cart-page__foot">
+        <div class="drawer__total">
+          <span class="tagline-l">Subtotal</span>
+          <span class="h6">{{ cart.total_price | money_without_trailing_zeros }}</span>
+        </div>
+        <button class="button" type="submit" name="checkout">Checkout</button>
+      </div>
+    </form>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{ "name": "Cart" }
+{% endschema %}

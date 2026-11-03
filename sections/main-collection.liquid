@@ -1,0 +1,113 @@
+{%- liquid
+  assign sort_by = collection.sort_by | default: collection.default_sort_by
+  if collection.handle == 'all' or collection.handle == 'frontpage'
+    assign heading = section.settings.all_heading
+  else
+    assign heading = collection.title
+  endif
+-%}
+<div class="collection-head">
+  <h1 class="h2">{{ heading | escape }}</h1>
+  {%- if collection.description != blank and section.settings.show_description -%}
+    <div class="collection-head__desc body-l rte">{{ collection.description }}</div>
+  {%- endif -%}
+</div>
+
+<div class="collection-bar">
+  <nav class="collection-tabs" aria-label="Categories">
+    {%- for block in section.blocks -%}
+      {%- liquid
+        if block.settings.collection == blank
+          assign tab_url = routes.all_products_collection_url
+          assign tab_handle = 'all'
+          assign tab_label = block.settings.label | default: 'All'
+        else
+          assign tab_collection = block.settings.collection
+          assign tab_url = tab_collection.url
+          assign tab_handle = tab_collection.handle
+          assign tab_label = block.settings.label | default: tab_collection.title
+        endif
+        if sort_by != collection.default_sort_by
+          assign tab_url = tab_url | append: '?sort_by=' | append: sort_by
+        endif
+      -%}
+      <a class="link link-underline" href="{{ tab_url }}"{% if tab_handle == collection.handle %} aria-current="page"{% endif %} {{ block.shopify_attributes }}>{{ tab_label | escape }}</a>
+    {%- endfor -%}
+  </nav>
+
+  <div class="sort">
+    <label class="tagline" for="SortBy">Sort</label>
+    <select id="SortBy" class="tagline" data-sort>
+      {%- for option in collection.sort_options -%}
+        {%- if section.settings.sort_options contains option.value -%}
+          <option value="{{ option.value | escape }}"{% if option.value == sort_by %} selected{% endif %}>{{ option.name | escape }}</option>
+        {%- endif -%}
+      {%- endfor -%}
+    </select>
+  </div>
+</div>
+
+{%- paginate collection.products by section.settings.per_page -%}
+  {%- if collection.products.size > 0 -%}
+    <div class="collection-grid">
+      {%- comment -%} Available pieces first, then sold pieces, each in the chosen sort order. {%- endcomment -%}
+      {%- for product in collection.products -%}
+        {%- if product.available -%}
+          {%- liquid
+            assign card_lazy = true
+            if forloop.index <= 4
+              assign card_lazy = false
+            endif
+          -%}
+          {% render 'product-card', product: product, lazy: card_lazy %}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if section.settings.show_sold -%}
+        {%- for product in collection.products -%}
+          {%- unless product.available -%}
+            {% render 'product-card', product: product %}
+          {%- endunless -%}
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  {%- else -%}
+    <p class="collection-empty body-l">Nothing here at the moment — new pieces arrive every week.</p>
+  {%- endif -%}
+
+  {%- if paginate.pages > 1 -%}
+    <nav class="pagination link" aria-label="Pagination">
+      {%- if paginate.previous -%}<a class="link-underline" href="{{ paginate.previous.url }}">Previous</a>{%- endif -%}
+      <span>{{ paginate.current_page }} / {{ paginate.pages }}</span>
+      {%- if paginate.next -%}<a class="link-underline" href="{{ paginate.next.url }}">Next</a>{%- endif -%}
+    </nav>
+  {%- endif -%}
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Collection",
+  "settings": [
+    { "type": "text", "id": "all_heading", "label": "Heading on the all-products page", "default": "Shop" },
+    { "type": "checkbox", "id": "show_description", "label": "Show collection description", "default": true },
+    { "type": "checkbox", "id": "show_sold", "label": "Show sold pieces (after available ones)", "default": true },
+    { "type": "range", "id": "per_page", "label": "Products per page", "min": 24, "max": 48, "step": 4, "default": 48, "info": "Sold pieces always appear after available ones on each page." },
+    {
+      "type": "text",
+      "id": "sort_options",
+      "label": "Sort options to show",
+      "default": "manual,created-descending,price-ascending,price-descending",
+      "info": "Comma-separated: manual, created-descending, price-ascending, price-descending, title-ascending, best-selling"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Category tab",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection", "info": "Leave empty for 'All'." },
+        { "type": "text", "id": "label", "label": "Label (optional)" }
+      ]
+    }
+  ]
+}
+{% endschema %}

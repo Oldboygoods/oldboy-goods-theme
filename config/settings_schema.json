@@ -1,0 +1,45 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Oldboy Goods",
+    "theme_version": "0.1.0",
+    "theme_author": "Oldboy Goods",
+    "theme_documentation_url": "https://oldboygoods.com",
+    "theme_support_url": "https://oldboygoods.com"
+  },
+  {
+    "name": "Brand",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Header logo",
+        "info": "Upload the wordmark (SVG or PNG). Export it from Figma: select the layer, Export, SVG."
+      },
+      {
+        "type": "image_picker",
+        "id": "footer_mark",
+        "label": "Footer mark",
+        "info": "The OG monogram shown beside the footer sign-up."
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon",
+        "info": "Square image, at least 64 × 64px."
+      }
+    ]
+  },
+  {
+    "name": "Fonts",
+    "settings": [
+      {
+        "type": "text",
+        "id": "adobe_fonts_kit",
+        "label": "Adobe Fonts web project ID",
+        "default": "uwi5xww",
+        "info": "The code in your Adobe Fonts embed link: use.typekit.net/[this].css"
+      }
+    ]
+  }
+]

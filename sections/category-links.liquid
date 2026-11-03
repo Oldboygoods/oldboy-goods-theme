@@ -1,0 +1,34 @@
+<nav class="category-links" aria-label="Categories">
+  {%- for block in section.blocks -%}
+    {%- assign c = block.settings.collection -%}
+    {%- capture label -%}{% if block.settings.label != blank %}{{ block.settings.label }}{% else %}{{ c.title }}{% endif %}{%- endcapture -%}
+    <a class="link link-underline" href="{% if c != blank %}{{ c.url }}{% else %}#{% endif %}" {{ block.shopify_attributes }}>{{ label | escape }}</a>
+  {%- endfor -%}
+</nav>
+
+{% schema %}
+{
+  "name": "Category links",
+  "max_blocks": 6,
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Category",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "text", "id": "label", "label": "Label (optional)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Category links",
+      "blocks": [
+        { "type": "link", "settings": { "label": "Furniture" } },
+        { "type": "link", "settings": { "label": "Lighting" } },
+        { "type": "link", "settings": { "label": "Objects" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

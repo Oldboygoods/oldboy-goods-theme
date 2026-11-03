@@ -1,0 +1,68 @@
+{%- comment -%}
+  Product card.
+  Accepts:
+  - product: product object (required)
+  - sizes: image sizes attribute (optional)
+  - lazy: boolean, lazy-load images (default true)
+{%- endcomment -%}
+{%- liquid
+  assign sizes = sizes | default: '(min-width: 990px) 25vw, (min-width: 750px) 33vw, 72vw'
+  assign loading = 'lazy'
+  if lazy == false
+    assign loading = 'eager'
+  endif
+  assign first_image = product.featured_media.preview_image
+  assign second_image = nil
+  if product.media.size > 1
+    assign second_image = product.media[1].preview_image
+  endif
+  assign sold = false
+  unless product.available
+    assign sold = true
+  endunless
+-%}
+<div class="card{% if sold %} card--sold{% endif %}">
+  <div class="card__media{% unless second_image %} card__media--single{% endunless %}">
+    {%- if first_image -%}
+      {{
+        first_image
+        | image_url: width: 1200
+        | image_tag:
+          loading: loading,
+          widths: '360, 540, 720, 900, 1200',
+          sizes: sizes,
+          alt: product.title,
+          class: 'card__img'
+      }}
+      {%- if second_image -%}
+        {{
+          second_image
+          | image_url: width: 1200
+          | image_tag:
+            loading: 'lazy',
+            widths: '360, 540, 720, 900, 1200',
+            sizes: sizes,
+            alt: '',
+            class: 'card__img card__img--hover'
+        }}
+      {%- endif -%}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'card__img' }}
+    {%- endif -%}
+    {%- if sold -%}
+      <span class="badge tagline">Sold</span>
+    {%- endif -%}
+  </div>
+  <div class="card__info">
+    <h3 class="card__title h6">
+      <a class="card__link" href="{{ product.url }}">{{ product.title | escape }}</a>
+    </h3>
+    <p class="card__price body">
+      {%- if sold -%}
+        Sold
+      {%- else -%}
+        {% render 'price', product: product %}
+      {%- endif -%}
+    </p>
+  </div>
+</div>

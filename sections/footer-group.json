@@ -1,0 +1,21 @@
+{
+  "type": "footer",
+  "name": "Footer group",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "shop": { "type": "menu", "settings": { "heading": "Shop", "menu": "footer-shop" } },
+        "help": { "type": "menu", "settings": { "heading": "Help", "menu": "footer-help" } },
+        "about": { "type": "menu", "settings": { "heading": "About", "menu": "footer-about" } },
+        "legal": { "type": "menu", "settings": { "heading": "Legal", "menu": "footer-legal" } }
+      },
+      "block_order": ["shop", "help", "about", "legal"],
+      "settings": {
+        "success_message": "Thanks — you're on the list.",
+        "consent_text": "By providing your email address, you agree to our privacy policy"
+      }
+    }
+  },
+  "order": ["footer"]
+}

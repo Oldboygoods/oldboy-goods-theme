@@ -1,0 +1,62 @@
+<div class="drawer-overlay" data-drawer-close></div>
+<aside class="drawer" id="CartDrawer" role="dialog" aria-modal="true" aria-labelledby="CartDrawerTitle" tabindex="-1" data-cart-drawer>
+  <div class="drawer__head">
+    <h2 class="h5" id="CartDrawerTitle">Your basket</h2>
+    <button class="drawer__close" type="button" data-drawer-close aria-label="Close basket">&times;</button>
+  </div>
+
+  {%- if cart.item_count == 0 -%}
+    <div class="drawer__body">
+      <div class="drawer__empty">
+        <p class="body-l">Your basket is empty.</p>
+        <a class="link link-underline" href="{{ routes.all_products_collection_url }}">Shop all</a>
+      </div>
+    </div>
+  {%- else -%}
+    <div class="drawer__body">
+      <ul>
+        {%- for item in cart.items -%}
+          <li class="line-item" data-line-key="{{ item.key }}">
+            <a class="line-item__media" href="{{ item.url }}" tabindex="-1">
+              {%- if item.image -%}
+                {{ item.image | image_url: width: 300 | image_tag: loading: 'lazy', alt: item.product.title }}
+              {%- endif -%}
+            </a>
+            <div class="line-item__info">
+              <a class="h6" href="{{ item.url }}">{{ item.product.title | escape }}</a>
+              {%- unless item.product.has_only_default_variant -%}
+                <p class="small">{{ item.variant.title | escape }}</p>
+              {%- endunless -%}
+              <p class="body">{{ item.final_line_price | money_without_trailing_zeros }}</p>
+              <button class="line-item__remove" type="button" data-line-remove="{{ item.key }}">Remove</button>
+            </div>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+    <div class="drawer__foot">
+      <div class="drawer__total">
+        <span class="tagline-l">Subtotal</span>
+        <span class="h6">{{ cart.total_price | money_without_trailing_zeros }}</span>
+      </div>
+      <p class="small">{{ section.settings.note | escape }}</p>
+      <form action="{{ routes.cart_url }}" method="post">
+        <button class="button" type="submit" name="checkout">Checkout</button>
+      </form>
+    </div>
+  {%- endif -%}
+</aside>
+
+{% schema %}
+{
+  "name": "Cart drawer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "note",
+      "label": "Note under subtotal",
+      "default": "Delivery or collection is arranged at checkout."
+    }
+  ]
+}
+{% endschema %}
