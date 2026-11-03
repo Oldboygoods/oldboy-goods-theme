@@ -90,6 +90,11 @@ ul, ol { padding: 0; list-style: none; }
   line-height: 1.2;
   letter-spacing: var(--tracking-tight);
 }
+.h2, .h3, .h4, .h5, .h6, .link, .link-l, .button {
+  /* Mirror Figma's "text-box trim: cap height / baseline": spacing is measured from
+     the letters, not the line box. Chrome 133+ and Safari 18.2+; Firefox ignores it. */
+  text-box: trim-both cap alphabetic;
+}
 .h2 { font-size: var(--fs-h2); line-height: 1.05; }
 .h3 { font-size: var(--fs-h3); line-height: 1.1; }
 .h4 { font-size: var(--fs-h4); }
@@ -137,15 +142,16 @@ ul, ol { padding: 0; list-style: none; }
    -------------------------------------------------------------------------- */
 .button {
   display: flex; align-items: center; justify-content: center; width: 100%;
-  min-height: 56px; padding: 16px 10px;
+  min-height: 52px; padding: 0 10px; line-height: 1;
   background: var(--c-text); color: var(--c-surface);
   font-family: var(--font-display); font-weight: var(--lw); font-size: var(--fs-link);
-  line-height: 1.5; text-transform: uppercase; text-align: center;
+  text-transform: uppercase; text-align: center;
   transition: opacity .2s ease;
 }
 .button:hover { opacity: .88; }
 .button[disabled], .button[aria-disabled="true"] { opacity: .35; cursor: not-allowed; }
-@media (min-width: 990px) { .button { min-height: 65px; padding: 24px 10px; } }
+/* Figma: 24px padding + cap-height text = 65px tall */
+@media (min-width: 990px) { .button { min-height: 65px; } }
 
 .inline-form {
   display: flex; align-items: center; gap: 16px;
@@ -186,7 +192,7 @@ ul, ol { padding: 0; list-style: none; }
 @media (min-width: 990px) {
   .site-nav {
     display: flex; flex: 1 1 auto; justify-content: space-between; align-items: center;
-    padding: 0 clamp(32px, 13.3vw - 96px, 256px);
+    padding: 0 clamp(32px, 13.333vw, 256px);
   }
 }
 .site-nav a { white-space: nowrap; }
@@ -264,7 +270,7 @@ body.menu-open, body.drawer-open { overflow: hidden; }
 .product-row--compact { padding-top: calc(var(--section-pad) / 2); padding-bottom: calc(var(--section-pad) / 2); }
 .product-row__head {
   display: flex; align-items: flex-end; justify-content: space-between; gap: 24px;
-  margin-bottom: clamp(24px, 2.6vw, 64px);
+  margin-bottom: clamp(32px, 3.333vw, 64px);
 }
 .product-row__grid {
   display: grid; gap: var(--gap);
@@ -391,14 +397,14 @@ body.menu-open, body.drawer-open { overflow: hidden; }
 
 .product-info { padding: 24px var(--gutter) 0; }
 @media (min-width: 990px) {
-  .product-info { padding: 10px 0 0 48px; }
+  .product-info { padding: 10px 48px 0; }
   .product-info__inner { position: sticky; top: 24px; }
 }
 .product-info__inner { display: flex; flex-direction: column; gap: 32px; }
 @media (min-width: 990px) { .product-info__inner { gap: 48px; } }
 .product-info__titles { display: flex; flex-direction: column; gap: 12px; }
 @media (min-width: 990px) { .product-info__titles { gap: 24px; } }
-.product-info__buy { display: flex; flex-direction: column; gap: 20px; }
+.product-info__buy { display: flex; flex-direction: column; gap: 24px; }
 .product-info__trust { text-align: center; }
 .product-info__error { color: var(--c-milk); font-size: var(--fs-small); }
 .product-info__error:empty { display: none; }
@@ -412,7 +418,8 @@ body.menu-open, body.drawer-open { overflow: hidden; }
 .accordion summary::-webkit-details-marker { display: none; }
 .accordion__icon { width: 24px; height: 24px; flex: 0 0 auto; transition: transform .2s ease; }
 .accordion[open] .accordion__icon { transform: rotate(180deg); }
-.accordion__body { padding: 0 0 24px; display: flex; flex-direction: column; gap: 16px; }
+.accordion__body { padding: 0 0 24px; display: flex; flex-direction: column; gap: 10px; }
+.accordion summary .tagline-l { flex: 1 1 auto; }
 .spec-list { display: grid; grid-template-columns: max-content 1fr; gap: 6px 24px; }
 .spec-list dt { font-weight: 500; }
 .spec-list dd { margin: 0; }

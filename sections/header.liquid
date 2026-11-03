@@ -10,7 +10,7 @@
         | image_tag: loading: 'eager', widths: '200, 400, 800', sizes: '(min-width: 990px) 372px, 180px', alt: shop.name
       }}
     {%- else -%}
-      <span class="site-header__wordmark">{{ shop.name }}</span>
+      <img src="{{ 'logo-wordmark.svg' | asset_url }}" alt="Oldboy Goods" width="372" height="50" loading="eager">
     {%- endif -%}
   </a>
 

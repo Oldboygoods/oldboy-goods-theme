@@ -16,11 +16,13 @@
   </div>
 
   <div class="site-footer__signup">
-    {%- if settings.footer_mark != blank -%}
-      <div class="site-footer__mark">
+    <div class="site-footer__mark">
+      {%- if settings.footer_mark != blank -%}
         {{ settings.footer_mark | image_url: width: 300 | image_tag: loading: 'lazy', alt: '' }}
-      </div>
-    {%- endif -%}
+      {%- else -%}
+        <img src="{{ 'logo-mark.svg' | asset_url }}" alt="" width="116" height="183" loading="lazy">
+      {%- endif -%}
+    </div>
     <div class="site-footer__form">
       {%- form 'customer', id: 'FooterNewsletter' -%}
         <input type="hidden" name="contact[tags]" value="newsletter">
