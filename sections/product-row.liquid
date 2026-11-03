@@ -2,8 +2,9 @@
   assign collection = section.settings.collection
   assign products = collection.products
   assign collection_url = collection.url
-  if section.settings.all_products
-    assign products = collections['all'].products | sort: 'created_at' | reverse
+  # Falls back to the newest products in the shop if no collection is set, or the chosen one is missing
+  if section.settings.all_products or collection == blank
+    assign products = collections.all.products | sort: 'created_at' | reverse
     assign collection_url = routes.all_products_collection_url
   endif
   assign product_count = products | size
