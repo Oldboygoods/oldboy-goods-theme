@@ -17,8 +17,12 @@
      desktop size at 1920px, mobile size at 390px, scaling linearly in between. */
   --font-display: "neue-haas-grotesk-display", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-text: "neue-haas-grotesk-text", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --w-medium: 500;  /* 65 Medium */
-  --w-roman: 400;   /* 55 Roman */
+  /* Adobe numbers Display Pro's eight weights 100–900 differently from Text Pro:
+     Display 45 Light = 400, 55 Roman = 500, 65 Medium = 600, 75 Bold = 700.
+     Text Pro: 55 Roman = 400, 65 Medium = 500, 75 Bold = 700. */
+  --w-display-medium: 600;  /* Display Pro 65 Medium */
+  --w-medium: 500;          /* Text Pro 65 Medium */
+  --w-roman: 400;           /* Text Pro 55 Roman */
   --fs-h1: clamp(4rem, 3.660vw + 3.1078rem, 7.5rem);  /* 120 → 64 */
   --fs-h2: clamp(2.25rem, 2.353vw + 1.6765rem, 4.5rem);  /* 72 → 36 */
   --fs-h3: clamp(1.5rem, 0.523vw + 1.3725rem, 2rem);  /* 32 → 24 */
@@ -82,7 +86,7 @@ ul, ol { padding: 0; list-style: none; }
    -------------------------------------------------------------------------- */
 /* Headings: Figma Heading/H1–H5. H1–H3 Display Pro, H4–H5 Text Pro, all 65 Medium */
 .h1, .h2, .h3, .h4, .h5 { font-weight: var(--w-medium); }
-.h1, .h2, .h3 { font-family: var(--font-display); }
+.h1, .h2, .h3 { font-family: var(--font-display); font-weight: var(--w-display-medium); }
 .h4, .h5 { font-family: var(--font-text); }
 .h1 { font-size: var(--fs-h1); line-height: 1;    letter-spacing: -0.02em; }
 .h2 { font-size: var(--fs-h2); line-height: 1.05; letter-spacing: -0.02em; }
@@ -173,7 +177,7 @@ ul, ol { padding: 0; list-style: none; }
 .site-header__logo img { width: var(--logo-w-mobile, 180px); height: auto; }
 @media (min-width: 990px) { .site-header__logo img { width: var(--logo-w, 372px); } }
 .site-header__wordmark {
-  font-family: var(--font-display); font-weight: var(--w-medium); font-style: italic;
+  font-family: var(--font-display); font-weight: var(--w-display-medium); font-style: italic;
   font-size: var(--fs-h5); letter-spacing: -0.02em; text-transform: uppercase;
   line-height: 1;
 }
@@ -216,7 +220,7 @@ ul, ol { padding: 0; list-style: none; }
 }
 .menu-open .mobile-menu { visibility: visible; opacity: 1; }
 .mobile-menu__links { display: flex; flex-direction: column; gap: 8px; }
-.mobile-menu__links a { font-family: var(--font-display); font-size: var(--fs-h2); font-weight: var(--w-medium); letter-spacing: -0.02em; line-height: 1.1; }
+.mobile-menu__links a { font-family: var(--font-display); font-size: var(--fs-h2); font-weight: var(--w-display-medium); letter-spacing: -0.02em; line-height: 1.1; }
 @media (min-width: 990px) { .mobile-menu { display: none; } }
 body.menu-open, body.drawer-open { overflow: hidden; }
 
