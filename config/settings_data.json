@@ -1,6 +1,10 @@
 {
   "current": {
-    "adobe_fonts_kit": "uwi5xww"
+    "adobe_fonts_kit": "uwi5xww",
+    "heading_weight": "600",
+    "link_weight": "600",
+    "heading_tracking": "-0.01em",
+    "body_font": "text-400"
   },
   "presets": {
     "Default": {

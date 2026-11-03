@@ -30,6 +30,25 @@
     {%- endif -%}
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
+    {%- liquid
+      assign body_family = '"neue-haas-grotesk-text"'
+      assign body_weight = 400
+      if settings.body_font == 'display-400'
+        assign body_family = '"neue-haas-grotesk-display"'
+      elsif settings.body_font == 'display-300'
+        assign body_family = '"neue-haas-grotesk-display"'
+        assign body_weight = 300
+      endif
+    -%}
+    <style>
+      :root {
+        --hw: {{ settings.heading_weight | default: 600 }};
+        --lw: {{ settings.link_weight | default: 600 }};
+        --tracking-tight: {{ settings.heading_tracking | default: '-0.01em' }};
+        --font-text: {{ body_family }}, "Helvetica Neue", Helvetica, Arial, sans-serif;
+        --bw: {{ body_weight }};
+      }
+    </style>
 
     <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
 
