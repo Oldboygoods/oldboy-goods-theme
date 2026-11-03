@@ -171,7 +171,7 @@ ul, ol { padding: 0; list-style: none; }
   background: var(--c-surface);
   position: relative; z-index: 20;
 }
-@media (min-width: 990px) { .site-header { padding: 32px; } }
+@media (min-width: 990px) { .site-header { padding: 16px 32px; } }  /* Figma header: 16 top/bottom, 32 sides */
 
 .site-header__logo { flex: 0 0 auto; display: block; }
 .site-header__logo img { width: var(--logo-w-mobile, 180px); height: auto; }
