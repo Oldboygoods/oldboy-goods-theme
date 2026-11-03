@@ -1,0 +1,74 @@
+{%- comment -%}
+  Newsletter pop-up. Layout mirrors the Lovable "Stay in the loop" pop-up;
+  styling uses the Figma style guide (H3 heading, Body text, product-page button).
+  Shown once per visitor after a delay; dismissing hides it for the set number of days.
+{%- endcomment -%}
+{%- if section.settings.enabled and template.name != 'cart' and template.name != 'password' -%}
+  <div class="popup" id="NewsletterPopup" data-popup data-delay="{{ section.settings.delay }}" data-days="{{ section.settings.days }}" hidden>
+    <div class="popup__overlay" data-popup-close></div>
+    <div class="popup__dialog" role="dialog" aria-modal="true" aria-labelledby="NewsletterPopupTitle" tabindex="-1">
+      <button class="popup__close" type="button" data-popup-close aria-label="Close">&times;</button>
+
+      <div class="popup__media">
+        {%- if section.settings.image != blank -%}
+          {{
+            section.settings.image
+            | image_url: width: 1400
+            | image_tag:
+              loading: 'lazy',
+              widths: '600, 900, 1400',
+              sizes: '(min-width: 750px) 680px, 100vw',
+              alt: '',
+              style: section.settings.image.presentation.focal_point | prepend: 'object-position: '
+          }}
+        {%- endif -%}
+        {%- if section.settings.show_logo -%}
+          <img class="popup__logo" src="{{ 'logo-wordmark.svg' | asset_url }}" alt="Oldboy Goods" width="372" height="50">
+        {%- endif -%}
+      </div>
+
+      <div class="popup__content">
+        <h2 class="h3" id="NewsletterPopupTitle">{{ section.settings.heading | escape }}</h2>
+        {%- if section.settings.text != blank -%}
+          <p class="body popup__text">{{ section.settings.text | escape }}</p>
+        {%- endif -%}
+
+        {%- form 'customer', id: 'NewsletterPopupForm' -%}
+          <div class="popup__form">
+          <input type="hidden" name="contact[tags]" value="newsletter,popup">
+          <input type="hidden" name="contact[accepts_marketing]" value="true">
+          <label class="visually-hidden" for="NewsletterPopupEmail">Email address</label>
+          <input class="popup__input body-l" id="NewsletterPopupEmail" type="email" name="contact[email]" placeholder="Email address" autocomplete="email" required>
+          <button class="button" type="submit">{{ section.settings.button_label | escape }}</button>
+          <p class="form-message" role="status" data-newsletter-message hidden>{{ section.settings.success_message | escape }}</p>
+          {%- if form.posted_successfully? -%}
+            <p class="form-message" role="status">{{ section.settings.success_message | escape }}</p>
+          {%- endif -%}
+          </div>
+        {%- endform -%}
+
+        {%- if section.settings.consent != blank -%}
+          <p class="small popup__consent">{{ section.settings.consent | escape }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Newsletter pop-up",
+  "settings": [
+    { "type": "checkbox", "id": "enabled", "label": "Show pop-up", "default": true },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "checkbox", "id": "show_logo", "label": "Show wordmark over the image", "default": true },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Stay in the loop" },
+    { "type": "text", "id": "text", "label": "Text", "default": "New finds, new arrivals and the occasional update from Oldboy Goods." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Sign up" },
+    { "type": "text", "id": "consent", "label": "Small print", "default": "By subscribing, you agree to receive marketing emails from Oldboy Goods. You can unsubscribe at any time." },
+    { "type": "text", "id": "success_message", "label": "Success message", "default": "Thanks — you're on the list." },
+    { "type": "range", "id": "delay", "label": "Show after", "min": 0, "max": 60, "step": 1, "unit": "s", "default": 8 },
+    { "type": "range", "id": "days", "label": "After closing, hide for", "min": 1, "max": 90, "step": 1, "unit": "d", "default": 30 }
+  ]
+}
+{% endschema %}

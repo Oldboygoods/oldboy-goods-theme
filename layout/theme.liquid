@@ -51,6 +51,7 @@
     {% sections 'footer-group' %}
 
     {% section 'cart-drawer' %}
+    {% section 'newsletter-popup' %}
 
     <script>
       window.theme = {
@@ -59,6 +60,10 @@
           cartAdd: {{ routes.cart_add_url | json }},
           cartChange: {{ routes.cart_change_url | json }},
           root: {{ routes.root_url | json }}
+        },
+        klaviyo: {
+          publicKey: {{ settings.klaviyo_public_key | strip | json }},
+          listId: {{ settings.klaviyo_list_id | strip | json }}
         }
       };
     </script>

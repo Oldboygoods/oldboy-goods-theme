@@ -222,7 +222,7 @@ ul, ol { padding: 0; list-style: none; }
 .mobile-menu__links { display: flex; flex-direction: column; gap: 8px; }
 .mobile-menu__links a { font-family: var(--font-display); font-size: var(--fs-h2); font-weight: var(--w-display-medium); letter-spacing: -0.02em; line-height: 1.1; }
 @media (min-width: 990px) { .mobile-menu { display: none; } }
-body.menu-open, body.drawer-open { overflow: hidden; }
+body.menu-open, body.drawer-open, body.popup-open { overflow: hidden; }
 
 /* --------------------------------------------------------------------------
    Product card
@@ -517,3 +517,44 @@ body.menu-open, body.drawer-open { overflow: hidden; }
 .shopify-policy__body p + p, .rte li + li, .shopify-policy__body li + li { margin-top: 0.6em; }
 .shopify-policy__body ul, .rte ul { list-style: disc; padding-left: 1.2em; margin: 0.8em 0; }
 .shopify-policy__body a { text-decoration: underline; text-underline-offset: 3px; }
+
+/* --------------------------------------------------------------------------
+   Newsletter pop-up (layout from the Lovable pop-up, styles from the style guide)
+   -------------------------------------------------------------------------- */
+.popup { position: fixed; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: var(--gutter); }
+.popup[hidden] { display: none; }
+.popup__overlay { position: absolute; inset: 0; background: rgba(36, 21, 0, .45); }
+.popup__dialog {
+  position: relative; width: min(680px, 100%); max-height: calc(100vh - 2 * var(--gutter)); overflow-y: auto;
+  background: var(--c-surface); color: var(--c-text);
+}
+.popup__close {
+  position: absolute; top: 12px; right: 12px; z-index: 2; width: 40px; height: 40px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 32px; line-height: 1; color: var(--c-surface);
+}
+.popup__media { position: relative; aspect-ratio: 8 / 3; background: var(--c-icing); overflow: hidden; }
+.popup__media > img:not(.popup__logo) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.popup__logo {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: min(220px, 50%); height: auto; filter: brightness(0) invert(1);
+}
+.popup__content { padding: 48px 40px 40px; text-align: center; display: flex; flex-direction: column; align-items: center; }
+.popup__text { margin-top: 24px; max-width: 420px; }
+.popup__form { width: 100%; margin-top: 40px; display: flex; flex-direction: column; gap: 16px; }
+.popup__input {
+  width: 100%; background: transparent; border: 0; border-bottom: 1px solid var(--c-line);
+  padding: 16px 0; text-align: left;
+}
+.popup__input::placeholder { color: var(--c-text); opacity: 1; }
+.popup__input:focus { outline: none; border-bottom-width: 2px; margin-bottom: -1px; }
+.popup__consent { margin-top: 24px; max-width: 480px; opacity: .8; }
+.popup .form-message { margin-top: 0; }
+#NewsletterPopupForm.is-done input, #NewsletterPopupForm.is-done button { display: none; }
+#NewsletterPopupForm, .popup__content > form { width: 100%; }
+@media (max-width: 749px) {
+  .popup { align-items: flex-end; padding: 0; }
+  .popup__dialog { max-height: 92vh; }
+  .popup__content { padding: 32px var(--gutter) 32px; }
+  .popup__media { aspect-ratio: 2 / 1; }
+}

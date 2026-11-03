@@ -2,13 +2,15 @@
   <h2 class="h3">{{ section.settings.heading | escape }}</h2>
   <div class="newsletter__form">
     {%- form 'customer', id: 'NewsletterStrip' -%}
+        <input type="hidden" name="contact[accepts_marketing]" value="true">
       <input type="hidden" name="contact[tags]" value="newsletter">
       <div class="inline-form">
         <label class="visually-hidden" for="NewsletterStripEmail">Email address</label>
         <input id="NewsletterStripEmail" type="email" name="contact[email]" placeholder="Email address" autocomplete="email" required>
         <button class="link-l" type="submit">Subscribe</button>
       </div>
-      {%- if form.posted_successfully? -%}
+      <p class="form-message" role="status" data-newsletter-message hidden>{{ section.settings.success_message | escape }}</p>
+        {%- if form.posted_successfully? -%}
         <p class="form-message" role="status">{{ section.settings.success_message | escape }}</p>
       {%- elsif form.errors -%}
         <p class="form-message" role="alert">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>

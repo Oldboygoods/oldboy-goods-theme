@@ -41,5 +41,26 @@
         "info": "The code in your Adobe Fonts embed link: use.typekit.net/[this].css"
       }
     ]
+  },
+  {
+    "name": "Klaviyo",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Sign-up forms (pop-up, newsletter strip, footer) send emails straight to this Klaviyo list. Leave empty to use Shopify's customer list instead."
+      },
+      {
+        "type": "text",
+        "id": "klaviyo_public_key",
+        "label": "Public API key (Site ID)",
+        "info": "Klaviyo → Settings → API keys. 6 characters. Never the private key."
+      },
+      {
+        "type": "text",
+        "id": "klaviyo_list_id",
+        "label": "List ID",
+        "info": "Klaviyo → Lists & segments → your list → Settings."
+      }
+    ]
   }
 ]

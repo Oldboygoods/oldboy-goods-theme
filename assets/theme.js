@@ -191,4 +191,91 @@
       });
     }, { passive: true });
   }
+
+  /* ---------- Newsletter: Klaviyo (if configured) or Shopify customer form ---------- */
+  const klaviyo = (window.theme && window.theme.klaviyo) || {};
+  const useKlaviyo = !!(klaviyo.publicKey && klaviyo.listId);
+  const POPUP_KEY = 'obg-newsletter';
+  function remember(state, days) {
+    try { localStorage.setItem(POPUP_KEY, JSON.stringify({ state, until: Date.now() + days * 864e5 })); } catch (e) {}
+  }
+  function remembered() {
+    try {
+      const v = JSON.parse(localStorage.getItem(POPUP_KEY) || 'null');
+      return v && (v.state === 'subscribed' || v.until > Date.now());
+    } catch (e) { return false; }
+  }
+
+  function subscribeKlaviyo(email, source) {
+    return fetch('https://a.klaviyo.com/client/subscriptions/?company_id=' + encodeURIComponent(klaviyo.publicKey), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/vnd.api+json', revision: '2024-10-15' },
+      body: JSON.stringify({
+        data: {
+          type: 'subscription',
+          attributes: {
+            custom_source: source,
+            profile: { data: { type: 'profile', attributes: {
+              email,
+              subscriptions: { email: { marketing: { consent: 'SUBSCRIBED' } } }
+            } } }
+          },
+          relationships: { list: { data: { type: 'list', id: klaviyo.listId } } }
+        }
+      })
+    }).then((r) => { if (!r.ok) throw new Error('Klaviyo ' + r.status); });
+  }
+
+  document.querySelectorAll('#NewsletterPopupForm, #NewsletterStrip, #FooterNewsletter').forEach((form) => {
+    if (!useKlaviyo) return; // Shopify's customer form handles it
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const input = form.querySelector('input[type="email"]');
+      const msg = form.querySelector('[data-newsletter-message]');
+      const btn = form.querySelector('button[type="submit"]');
+      if (!input || !input.value) return;
+      if (btn) btn.disabled = true;
+      subscribeKlaviyo(input.value.trim(), form.id === 'NewsletterPopupForm' ? 'Website pop-up' : 'Website form')
+        .then(() => {
+          form.classList.add('is-done');
+          if (msg) msg.hidden = false;
+          input.value = '';
+          remember('subscribed', 3650);
+        })
+        .catch(() => form.submit()) // fall back to Shopify if Klaviyo is unreachable
+        .finally(() => { if (btn) btn.disabled = false; });
+    });
+  });
+
+  /* ---------- Newsletter pop-up ---------- */
+  const popup = document.querySelector('[data-popup]');
+  if (popup) {
+    const days = parseInt(popup.dataset.days || '30', 10);
+    const delay = parseInt(popup.dataset.delay || '8', 10) * 1000;
+    const dialog = popup.querySelector('[role="dialog"]');
+    let lastPopupFocus = null;
+    const posted = /customer_posted=true/.test(location.search) || popup.querySelector('.form-message:not([data-newsletter-message])');
+
+    function openPopup() {
+      if (document.body.classList.contains('drawer-open')) return setTimeout(openPopup, 5000);
+      lastPopupFocus = document.activeElement;
+      popup.hidden = false;
+      document.body.classList.add('popup-open');
+      if (dialog) dialog.focus();
+    }
+    function closePopup() {
+      popup.hidden = true;
+      document.body.classList.remove('popup-open');
+      remember('dismissed', days);
+      if (lastPopupFocus && lastPopupFocus.focus) lastPopupFocus.focus();
+    }
+    popup.querySelectorAll('[data-popup-close]').forEach((el) => el.addEventListener('click', closePopup));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !popup.hidden) closePopup(); });
+    const inEditor = window.Shopify && window.Shopify.designMode;
+    if (posted) { remember('subscribed', 3650); if (popup.querySelector('.form-message:not([data-newsletter-message])')) openPopup(); }
+    else if (inEditor) { /* shown via the theme editor's section select below */ }
+    else if (!remembered()) setTimeout(openPopup, delay);
+    document.addEventListener('shopify:section:select', (e) => { if (e.target.querySelector && e.target.querySelector('[data-popup]')) { popup.hidden = false; } });
+    document.addEventListener('shopify:section:deselect', (e) => { if (e.target.querySelector && e.target.querySelector('[data-popup]')) { popup.hidden = true; } });
+  }
 })();
